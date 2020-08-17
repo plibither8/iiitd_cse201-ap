@@ -7,34 +7,34 @@ import java.math.BigInteger;
 
 public class Solution {
   static void prime(BigInteger n) {
-    long count = 0;
+    Boolean check = false;
 
     BigInteger two = new BigInteger("2");
     BigInteger three = new BigInteger("3");
     BigInteger root = n.sqrt().add(BigInteger.ONE);
 
     while (n.mod(two).compareTo(BigInteger.ZERO) == 0) {
-      if (count > 0) {
+      if (check) {
         System.out.print("* ");
       }
       n = n.divide(two);
       System.out.print(2 + " ");
-      count++;
+      check = true;
     }
 
     for (BigInteger i = three; i.compareTo(root) == -1; i = i.add(two)) {
       while (n.mod(i).compareTo(BigInteger.ZERO) == 0) {
-        if (count > 0) {
+        if (check) {
           System.out.print("* ");
         }
         n = n.divide(i);
         System.out.print(i + " ");
-        count++;
+        check = true;
       }
     }
 
     if (n.compareTo(two) == 1) {
-      if (count > 0) {
+      if (check) {
         System.out.print("* ");
       }
       System.out.println(n);
