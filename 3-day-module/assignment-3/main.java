@@ -33,8 +33,8 @@ class Application extends JFrame {
     frame = new JFrame("COVID-19 Status");
     mainC = new GridBagConstraints();
     mainC.insets = new Insets(20, 20, 0, 0);
-
     mainPanel = new JPanel(new GridBagLayout());
+
     optionsPanel = new JPanel();
 
     dateInputLabel = new JLabel("Enter a date (dd/mm/yyyy)");
