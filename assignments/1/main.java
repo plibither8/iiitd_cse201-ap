@@ -36,13 +36,50 @@ public class Application {
       Admission.admitAgainstTemp(institute, maxTemp);
     };
 
-    static void removeAdmittedPatients() {};
+    static void removeAdmittedPatients() {
+      boolean deleted = false;
+      for (Patient patient : patients) {
+        if (patient != null && patient.isAdmitted()) {
+          System.out.println("Patient " + patient.getId() + " deleted.");
+          deleted = true;
+          patient = null;
+        }
+      }
+      if (!deleted) {
+        System.out.println("No accounts deleted.");
+      }
+    };
 
-    static void removeClosedInstitutes() {};
+    static void removeClosedInstitutes() {
+      boolean deleted = false;
+      for (String name : instituteNames) {
+        Institute institute = institutes.get(name);
+        if (institute != null && !institute.isOpen()) {
+          System.out.println(institute.getName() + " deleted.");
+          deleted = true;
+          institute = null;
+        }
+      }
+      if (!deleted) {
+        System.out.println("No accounts deleted.");
+      }
+    };
 
-    static void displayUnadmittedPatients() {};
+    static void displayUnadmittedPatientsCount() {
+      int count = getUnadmittedPatientsCount();
+      System.out.println(count + " patients.");
+    };
 
-    static void displayOpenInstitutesCount() {};
+    static void displayOpenInstitutesCount() {
+      int count = 0;
+      for (String name : instituteNames) {
+        Institute institute = institutes.get(name);
+        if (institute != null && institute.isOpen()) {
+          count++;
+        }
+      }
+      System.out.println(count + " institutes are admitting patients currently.");
+    };
 
     static void displayInstituteDetails() {
       String instituteName = input.next();
@@ -50,11 +87,33 @@ public class Application {
       institute.displayDetails();
     };
 
-    static void displayPatientDetails() {};
+    static void displayPatientDetails() {
+      int id = input.nextInt();
+      Patient patient = patients.get(id - 1);
+      patient.displayDetails();
+    };
 
-    static void displayAllPatients() {};
+    static void displayAllPatients() {
+      for (Patient patient : patients) {
+        patient.displayIdAndName();
+      }
+    };
 
-    static void displayInstitutePatients() {};
+    static void displayInstitutePatients() {
+      String instituteName = input.next();
+      Institute institute = institutes.get(instituteName);
+      institute.displayPatientDetails();
+    };
+
+    static int getUnadmittedPatientsCount() {
+      int count = 0;
+      for (Patient patient : patients) {
+        if (!patient.isAdmitted()) {
+          count++;
+        }
+      }
+      return count;
+    }
   }
 
   private static class Admission {
@@ -84,7 +143,7 @@ public class Application {
   }
 
   private static void inputPrompt() {
-    while (true) {
+    while (Operations.getUnadmittedPatientsCount() > 0) {
       System.out.print("\nEnter input choice (1-9): ");
       int choice = input.nextInt();
       switch (choice) {
@@ -101,7 +160,7 @@ public class Application {
           break;
         }
         case 4: {
-          Operations.displayUnadmittedPatients();
+          Operations.displayUnadmittedPatientsCount();
           break;
         }
         case 5: {
@@ -184,7 +243,7 @@ class Institute {
     System.out.println("Temperature should be <= " + this.maxTemp);
     System.out.println("Oxygen levels should be >= " + this.minO2);
     System.out.println("Number of available beds: " + this.vacancy);
-    System.out.println("Admission status: " + status);
+    System.out.println("Admission status: " + this.status);
   }
 
   public void addPatient(Patient patient) {
@@ -193,6 +252,12 @@ class Institute {
     if (this.vacancy == 0) {
       this.status = "CLOSED";
       this.isOpen = false;
+    }
+  }
+
+  public void displayPatientDetails() {
+    for (Patient patient : this.patients) {
+      patient.displayRecoveryDate();
     }
   }
 
@@ -211,6 +276,7 @@ class Institute {
     this.minO2 = minO2;
     this.patients = new ArrayList<Patient>();
     this.isOpen = true;
+    this.status = "OPEN";
   }
 }
 
@@ -227,7 +293,26 @@ class Patient {
   static private int lastPatientId = 0;
 
   public void displayDetails() {
+    System.out.println("Name: " + this.name);
+    System.out.println("Age: " + this.age);
+    System.out.println("Body temperature: " + this.temp);
+    System.out.println("Oxygen level: " + this.o2);
+    System.out.println("Admission status: " + (this.isAdmitted ? "ADMITTED" : "NOT ADMITTED"));
+    if (this.isAdmitted) {
+      System.out.println("Admitting institute: " + this.instituteName);
+    }
+  }
 
+  public void displayIdAndName() {
+    System.out.println(this.id + ": " + this.name);
+  }
+
+  public void displayRecoveryDate() {
+    System.out.println(this.name + ": recovery in " + this.recoveryDays + " days");
+  }
+
+  public boolean isAdmitted() {
+    return this.isAdmitted;
   }
 
   public boolean isEligibleAgainstO2(float minO2) {
