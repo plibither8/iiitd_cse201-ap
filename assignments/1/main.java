@@ -8,7 +8,7 @@ public class Application {
   private static Scanner input = new Scanner(System.in);
 
   private static class Operations {
-    static void addInstitute() {
+    public static void addInstitute() {
       String name;
       float maxTemp;
       float minO2;
@@ -36,7 +36,7 @@ public class Application {
       Admission.admitAgainstTemp(institute, maxTemp);
     };
 
-    static void removeAdmittedPatients() {
+    public static void removeAdmittedPatients() {
       boolean deleted = false;
       for (Patient patient : Utils.getExistingPatients()) {
         if (patient.isAdmitted()) {
@@ -51,7 +51,7 @@ public class Application {
       }
     };
 
-    static void removeClosedInstitutes() {
+    public static void removeClosedInstitutes() {
       boolean deleted = false;
       for (Institute institute : Utils.getExistingInstitutes()) {
         if (!institute.isOpen()) {
@@ -66,12 +66,12 @@ public class Application {
       }
     };
 
-    static void displayUnadmittedPatientsCount() {
-      int count = getUnadmittedPatientsCount();
+    public static void displayUnadmittedPatientsCount() {
+      int count = Utils.getUnadmittedPatientsCount();
       System.out.println(count + " patients.");
     };
 
-    static void displayOpenInstitutesCount() {
+    public static void displayOpenInstitutesCount() {
       int count = 0;
       for (Institute institute : Utils.getExistingInstitutes()) {
         if (institute.isOpen()) {
@@ -81,7 +81,7 @@ public class Application {
       System.out.println(count + " institutes are admitting patients currently.");
     };
 
-    static void displayInstituteDetails() {
+    public static void displayInstituteDetails() {
       String instituteName = input.next();
       Institute institute = institutes.get(instituteName);
       if (institute != null) {
@@ -91,7 +91,7 @@ public class Application {
       }
     };
 
-    static void displayPatientDetails() {
+    public static void displayPatientDetails() {
       int id = input.nextInt();
       Patient patient = patients.get(id - 1);
       if (patient != null) {
@@ -101,13 +101,13 @@ public class Application {
       }
     };
 
-    static void displayAllPatients() {
+    public static void displayAllPatients() {
       for (Patient patient : Utils.getExistingPatients()) {
         patient.displayIdAndName();
       }
     };
 
-    static void displayInstitutePatients() {
+    public static void displayInstitutePatients() {
       String instituteName = input.next();
       Institute institute = institutes.get(instituteName);
       if (institute != null) {
@@ -116,16 +116,6 @@ public class Application {
         System.out.println("Institute with name " + instituteName + " not found.");
       }
     };
-
-    static int getUnadmittedPatientsCount() {
-      int count = 0;
-      for (Patient patient : Utils.getExistingPatients()) {
-        if (!patient.isAdmitted()) {
-          count++;
-        }
-      }
-      return count;
-    }
   }
 
   private static class Utils {
@@ -148,6 +138,16 @@ public class Application {
         }
       }
       return existingInstitutes;
+    }
+
+    public static int getUnadmittedPatientsCount() {
+      int count = 0;
+      for (Patient patient : Utils.getExistingPatients()) {
+        if (!patient.isAdmitted()) {
+          count++;
+        }
+      }
+      return count;
     }
   }
 
@@ -208,7 +208,7 @@ public class Application {
   }
 
   private static void inputPrompt() {
-    while (Operations.getUnadmittedPatientsCount() > 0) {
+    while (Utils.getUnadmittedPatientsCount() > 0) {
       System.out.print("\nEnter input choice (1-9): ");
       int choice = input.nextInt();
       switch (choice) {
