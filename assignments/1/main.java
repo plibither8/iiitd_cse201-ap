@@ -38,11 +38,12 @@ public class Application {
 
     static void removeAdmittedPatients() {
       boolean deleted = false;
-      for (Patient patient : patients) {
-        if (patient != null && patient.isAdmitted()) {
-          System.out.println("Patient " + patient.getId() + " deleted.");
+      for (Patient patient : Utils.getExistingPatients()) {
+        if (patient.isAdmitted()) {
+          int id = patient.getId();
+          patients.set(id - 1, null);
+          System.out.println("Patient " + id + " deleted.");
           deleted = true;
-          patient = null;
         }
       }
       if (!deleted) {
@@ -52,12 +53,12 @@ public class Application {
 
     static void removeClosedInstitutes() {
       boolean deleted = false;
-      for (String name : instituteNames) {
-        Institute institute = institutes.get(name);
-        if (institute != null && !institute.isOpen()) {
-          System.out.println(institute.getName() + " deleted.");
+      for (Institute institute : Utils.getExistingInstitutes()) {
+        if (!institute.isOpen()) {
+          String name = institute.getName();
+          institutes.put(name, null);
+          System.out.println(name + " deleted.");
           deleted = true;
-          institute = null;
         }
       }
       if (!deleted) {
@@ -72,9 +73,8 @@ public class Application {
 
     static void displayOpenInstitutesCount() {
       int count = 0;
-      for (String name : instituteNames) {
-        Institute institute = institutes.get(name);
-        if (institute != null && institute.isOpen()) {
+      for (Institute institute : Utils.getExistingInstitutes()) {
+        if (institute.isOpen()) {
           count++;
         }
       }
@@ -84,17 +84,25 @@ public class Application {
     static void displayInstituteDetails() {
       String instituteName = input.next();
       Institute institute = institutes.get(instituteName);
-      institute.displayDetails();
+      if (institute != null) {
+        institute.displayDetails();
+      } else {
+        System.out.println("Institute with name " + instituteName + " not found.");
+      }
     };
 
     static void displayPatientDetails() {
       int id = input.nextInt();
       Patient patient = patients.get(id - 1);
-      patient.displayDetails();
+      if (patient != null) {
+        patient.displayDetails();
+      } else {
+        System.out.println("Patient with ID " + id + " not found.");
+      }
     };
 
     static void displayAllPatients() {
-      for (Patient patient : patients) {
+      for (Patient patient : Utils.getExistingPatients()) {
         patient.displayIdAndName();
       }
     };
@@ -102,12 +110,16 @@ public class Application {
     static void displayInstitutePatients() {
       String instituteName = input.next();
       Institute institute = institutes.get(instituteName);
-      institute.displayPatientDetails();
+      if (institute != null) {
+        institute.displayPatientDetails();
+      } else {
+        System.out.println("Institute with name " + instituteName + " not found.");
+      }
     };
 
     static int getUnadmittedPatientsCount() {
       int count = 0;
-      for (Patient patient : patients) {
+      for (Patient patient : Utils.getExistingPatients()) {
         if (!patient.isAdmitted()) {
           count++;
         }
@@ -116,9 +128,32 @@ public class Application {
     }
   }
 
+  private static class Utils {
+    public static ArrayList<Patient> getExistingPatients() {
+      ArrayList<Patient> existingPatients = new ArrayList<Patient>();
+      for (Patient patient : patients) {
+        if (patient != null) {
+          existingPatients.add(patient);
+        }
+      }
+      return existingPatients;
+    }
+
+    public static ArrayList<Institute> getExistingInstitutes() {
+      ArrayList<Institute> existingInstitutes = new ArrayList<Institute>();
+      for (String name : instituteNames) {
+        Institute institute = institutes.get(name);
+        if (institute != null) {
+          existingInstitutes.add(institute);
+        }
+      }
+      return existingInstitutes;
+    }
+  }
+
   private static class Admission {
     public static void admitAgainstO2(Institute institute, float minO2) {
-      for (Patient patient : patients) {
+      for (Patient patient : Utils.getExistingPatients()) {
         if (!institute.isOpen()) break;
         if (patient.isEligibleAgainstO2(minO2)) {
           System.out.print("Recovery days for patient " + patient.getId() + ": ");
@@ -130,7 +165,7 @@ public class Application {
     }
 
     public static void admitAgainstTemp(Institute institute, float maxTemp) {
-      for (Patient patient : patients) {
+      for (Patient patient : Utils.getExistingPatients()) {
         if (!institute.isOpen()) break;
         if (patient.isEligibleAgainstTemp(maxTemp)) {
           System.out.print("Recovery days for patient " + patient.getId() + ": ");
@@ -139,6 +174,36 @@ public class Application {
           institute.addPatient(patient);
         }
       }
+    }
+  }
+
+  private static void inputPatients() {
+    System.out.print("Number of patients: ");
+    numberOfPatients = input.nextInt();
+
+    for (int i = 0; i < numberOfPatients; i++) {
+      String name;
+      int age;
+      float temp;
+      float o2;
+
+      System.out.println("\nPatient " + (i + 1));
+      System.out.println("=========");
+
+      System.out.print("Name: ");
+      name = input.next();
+
+      System.out.print("Age: ");
+      age = input.nextInt();
+
+      System.out.print("Body temperature (F): ");
+      temp = input.nextFloat();
+
+      System.out.print("Oxygen level (%): ");
+      o2 = input.nextFloat();
+
+      Patient patient = new Patient(name, age, temp, o2);
+      patients.add(patient);
     }
   }
 
@@ -187,42 +252,12 @@ public class Application {
     }
   }
 
-  private static void getPatients() {
-    System.out.print("Number of patients: ");
-    numberOfPatients = input.nextInt();
-
-    for (int i = 0; i < numberOfPatients; i++) {
-      String name;
-      int age;
-      float temp;
-      float o2;
-
-      System.out.println("\nPatient " + (i + 1));
-      System.out.println("=========");
-
-      System.out.print("Name: ");
-      name = input.next();
-
-      System.out.print("Age: ");
-      age = input.nextInt();
-
-      System.out.print("Body temperature (F): ");
-      temp = input.nextFloat();
-
-      System.out.print("Oxygen level (%): ");
-      o2 = input.nextFloat();
-
-      Patient patient = new Patient(name, age, temp, o2);
-      patients.add(patient);
-    }
-  }
-
   public static void main(String[] args) {
     patients = new ArrayList<Patient>();
     instituteNames = new ArrayList<String>();
     institutes = new HashMap<String, Institute>();
 
-    getPatients();
+    inputPatients();
     inputPrompt();
 
     input.close();
@@ -257,7 +292,9 @@ class Institute {
 
   public void displayPatientDetails() {
     for (Patient patient : this.patients) {
-      patient.displayRecoveryDate();
+      if (patient != null) {
+        patient.displayRecoveryDate();
+      }
     }
   }
 
