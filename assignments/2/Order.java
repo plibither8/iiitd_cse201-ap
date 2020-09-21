@@ -8,23 +8,23 @@ public class Order {
   private final float deliveryCharge;
 
   public ArrayList<FoodItem> getFoodItems() {
-    return this.foodItems;
+    return foodItems;
   }
 
   public String getRestaurantName() {
-    return this.restaurantName;
+    return restaurantName;
   }
 
   public String getCustomerName() {
-    return this.customerName;
+    return customerName;
   }
 
   public float getFinalBillAmount() {
-    return this.finalBillAmount;
+    return finalBillAmount;
   }
 
   public float getDeliveryCharge() {
-    return this.deliveryCharge;
+    return deliveryCharge;
   }
 
   Order(

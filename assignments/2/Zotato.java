@@ -7,40 +7,40 @@ public class Zotato {
   private float deliveryCharges;
 
   public ArrayList<CustomerInterface> getCustomers() {
-    return this.customers;
+    return customers;
   }
 
   public ArrayList<RestaurantInterface> getRestaurants() {
-    return this.restaurants;
+    return restaurants;
   }
 
   public float getBalance() {
-    return this.balance;
+    return balance;
   }
 
   public float getDeliveryCharges() {
-    return this.deliveryCharges;
+    return deliveryCharges;
   }
 
   public void printDetails() {
-    String text = "\nTotal company balance: INR " + this.balance + "/-\n"
-      + "Total delivery charges collected: INR " + this.deliveryCharges + "/-";
+    String text = "\nTotal company balance: INR " + balance + "/-\n"
+      + "Total delivery charges collected: INR " + deliveryCharges + "/-";
     System.out.println(text);
   }
 
   public void addToBalance(float amount) {
-    this.balance += amount;
+    balance += amount;
   }
 
   public void addToDeliveryCharges(float amount) {
-    this.deliveryCharges += amount;
+    deliveryCharges += amount;
   }
 
   Zotato() {
-    this.customers = new ArrayList<CustomerInterface>();
-    this.restaurants = new ArrayList<RestaurantInterface>();
-    this.balance = 0;
-    this.deliveryCharges = 0;
+    customers = new ArrayList<CustomerInterface>();
+    restaurants = new ArrayList<RestaurantInterface>();
+    balance = 0;
+    deliveryCharges = 0;
 
     customers.add(new EliteCustomer("Ram", "Dwarka"));
     customers.add(new EliteCustomer("Sam", "Gurgaon"));

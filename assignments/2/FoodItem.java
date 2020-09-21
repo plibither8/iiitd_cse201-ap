@@ -9,33 +9,33 @@ public class FoodItem {
   private static int lastId = 0;
 
   public void printDetails() {
-    String text = "  " + this.id + ") "
-      + this.name + ", "
-      + "INR " + this.price + "/-, "
-      + this.quantity + ", "
-      + this.discount + "% off" + ", "
-      + this.category;
+    String text = "  " + id + ") "
+      + name + ", INR "
+      + price + "/-, "
+      + quantity + ", "
+      + discount + "% off" + ", "
+      + category;
     System.out.println(text);
   }
 
   public int getId() {
-    return this.id;
+    return id;
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public float getPrice() {
-    return this.price;
+    return price;
   }
 
   public int getQuantity() {
-    return this.quantity;
+    return quantity;
   }
 
   public float getDiscount() {
-    return this.discount;
+    return discount;
   }
 
   public void setName(String name) {
@@ -51,7 +51,7 @@ public class FoodItem {
   }
 
   public void setQuantityDelta(int delta) {
-    this.quantity += delta;
+    quantity += delta;
   }
 
   public void setCategory(String category) {
@@ -78,11 +78,11 @@ public class FoodItem {
   }
 
   FoodItem(FoodItem foodItem, int quantity) {
-    this.id = foodItem.id;
-    this.name = foodItem.name;
-    this.price = foodItem.price;
-    this.discount = foodItem.discount;
-    this.category = foodItem.category;
+    id = foodItem.id;
+    name = foodItem.name;
+    price = foodItem.price;
+    discount = foodItem.discount;
+    category = foodItem.category;
     this.quantity = quantity;
   }
 }

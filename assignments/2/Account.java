@@ -9,15 +9,15 @@ public class Account {
   private static int lastId = 0;
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public String getType() {
-    return this.type;
+    return type;
   }
 
   public void addRewards(float amount) {
-    this.rewards += amount;
+    rewards += amount;
   }
 
   Account(String name, String address, String type) {

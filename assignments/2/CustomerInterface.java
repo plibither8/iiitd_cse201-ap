@@ -5,7 +5,7 @@ interface CustomerInterface {
   public String getType();
   public float getAbsoluteDiscount();
   public float getDeliveryCharge();
-  public boolean getNewOrder();
+  public boolean isNewOrder();
   public void setNewOrder(boolean value);
   public void printDetails();
   public void printRewards();
@@ -56,44 +56,44 @@ class Customer extends Account implements CustomerInterface {
 
   @Override
   public void createNewCart(Zotato company, RestaurantInterface restaurant) {
-    this.cart = new Cart(company, this, restaurant);
+    cart = new Cart(company, this, restaurant);
   }
 
   @Override
   public void checkoutCart() {
-    this.cart.checkout();
+    cart.checkout();
   }
 
   @Override
-  public boolean getNewOrder() {
-    return this.newOrder;
+  public boolean isNewOrder() {
+    return newOrder;
   }
 
   @Override
   public void setNewOrder(boolean value) {
-    this.newOrder = value;
+    newOrder = value;
   }
 
   @Override
   public float getAbsoluteDiscount() {
-    return this.absoluteBillDiscount;
+    return absoluteBillDiscount;
   }
 
   @Override
   public float getDeliveryCharge() {
-    return this.deliveryCharge;
+    return deliveryCharge;
   }
 
   @Override
   public void printDetails() {
-    String typeText = this.type.equals("Regular") ? "" : (" (" + this.type + ")");
-    String text = this.name + typeText + ", " + this.address + ", INR " + this.balance + "/-";
+    String typeText = type.equals("Regular") ? "" : (" (" + type + ")");
+    String text = name + typeText + ", " + address + ", INR " + balance + "/-";
     System.out.println(text);
   }
 
   @Override
   public void printRewards() {
-    System.out.println("Reward points: " + this.rewards);
+    System.out.println("Reward points: " + rewards);
   }
 
   @Override
@@ -116,28 +116,28 @@ class Customer extends Account implements CustomerInterface {
 
   @Override
   public boolean isCartDiscardable() {
-    return this.cart.isDiscardable();
+    return cart.isDiscardable();
   }
 
   @Override
   public boolean sufficientBalance(float billAmount) {
-    return (this.balance + this.rewards) >= billAmount;
+    return (balance + rewards) >= billAmount;
   }
 
   @Override
   public void subtractFromBalance(float amount) {
-    if (this.rewards > amount) {
-      this.rewards -= amount;
+    if (rewards > amount) {
+      rewards -= amount;
     } else {
-      amount -= this.rewards;
-      this.rewards = 0;
-      this.balance -= amount;
+      amount -= rewards;
+      rewards = 0;
+      balance -= amount;
     }
   }
 
   @Override
   public void addOrder(Order order) {
-    this.orders.add(order);
+    orders.add(order);
   }
 
   Customer(String name, String address) {
@@ -146,11 +146,11 @@ class Customer extends Account implements CustomerInterface {
 
   Customer(String name, String address, String type) {
     super(name, address, type);
-    this.balance = 1000;
-    this.deliveryCharge = 40;
-    this.absoluteBillDiscount = 0;
-    this.orders = new ArrayList<Order>();
-    this.newOrder = true;
+    balance = 1000;
+    deliveryCharge = 40;
+    absoluteBillDiscount = 0;
+    orders = new ArrayList<Order>();
+    newOrder = true;
     in = new Scanner(System.in);
   }
 }
@@ -158,15 +158,15 @@ class Customer extends Account implements CustomerInterface {
 class EliteCustomer extends Customer {
   EliteCustomer(String name, String address) {
     super(name, address, "Elite");
-    this.deliveryCharge = 0;
-    this.absoluteBillDiscount = 25;
+    deliveryCharge = 0;
+    absoluteBillDiscount = 50;
   }
 }
 
 class SpecialCustomer extends Customer {
   SpecialCustomer(String name, String address) {
     super(name, address, "Special");
-    this.deliveryCharge = 20;
-    this.absoluteBillDiscount = 50;
+    deliveryCharge = 20;
+    absoluteBillDiscount = 25;
   }
 }

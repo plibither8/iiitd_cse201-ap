@@ -10,26 +10,26 @@ public class Cart {
 
   public void addItem(FoodItem foodItem, int quantity) {
     int id = foodItem.getId();
-    FoodItem alreadyPresentItem = this.foodItems.get(id);
+    FoodItem alreadyPresentItem = foodItems.get(id);
 
     if (alreadyPresentItem != null) {
       int newQuantity = alreadyPresentItem.getQuantity() + quantity;
       alreadyPresentItem.setQuantity(newQuantity);
     } else {
       FoodItem newItem = new FoodItem(foodItem, quantity);
-      this.foodItems.put(newItem.getId(), newItem);
+      foodItems.put(newItem.getId(), newItem);
     }
 
-    this.customer.setNewOrder(false);
-    this.filled = true;
+    customer.setNewOrder(false);
+    filled = true;
 
     System.out.println("\nItems added to cart!");
   }
 
   private float getFoodPrice() {
     float totalFoodPrice = 0;
-    for (int id : this.foodItems.keySet()) {
-      FoodItem foodItem = this.foodItems.get(id);
+    for (int id : foodItems.keySet()) {
+      FoodItem foodItem = foodItems.get(id);
       float rawItemPrice = foodItem.getPrice() * foodItem.getQuantity();
       float discountedPrice = (100 - foodItem.getDiscount()) * rawItemPrice / 100;
       totalFoodPrice += discountedPrice;
@@ -123,9 +123,9 @@ public class Cart {
     );
 
     restaurant.incrementOrderCount();
-    this.cleared = true;
-    this.filled = false;
-    this.customer.setNewOrder(true);
+    cleared = true;
+    filled = false;
+    customer.setNewOrder(true);
 
     System.out.println(
       "\n" + totalQuantity + " items successfully bought for INR " + billableAmount + "/-"
@@ -133,13 +133,13 @@ public class Cart {
   }
 
   public boolean isDiscardable() {
-    return this.cleared || !this.filled;
+    return cleared || !filled;
   }
 
   Cart(Zotato company, CustomerInterface customer, RestaurantInterface restaurant) {
-    this.foodItems = new HashMap<Integer, FoodItem>();
-    this.cleared = false;
-    this.filled = false;
+    foodItems = new HashMap<Integer, FoodItem>();
+    cleared = false;
+    filled = false;
     this.company = company;
     this.customer = customer;
     this.restaurant = restaurant;

@@ -28,49 +28,48 @@ class Restaurant extends Account implements RestaurantInterface {
   private Scanner in;
 
   public void printDetails() {
-    String text = this.name + ", " + this.address + ", " + this.orderCount;
-    System.out.println(text);
+    System.out.println(name + ", " + address + ", " + orderCount);
   }
 
   /* Accessors */
   @Override
   public float getRelativeDiscount() {
-    return this.relativeDiscount;
+    return relativeDiscount;
   };
 
   @Override
   public float getAbsoluteDiscount() {
-    return this.absoluteDiscount;
+    return absoluteDiscount;
   };
 
   @Override
   public float calculateRewards(float restaurantCharges) {
-    return this.rewardUnit * (int)(restaurantCharges / rewardPer);
+    return rewardUnit * (int)(restaurantCharges / rewardPer);
   }
 
   @Override
   public FoodItem getFoodItemById(int id) {
-    return this.foodItems.get(id);
+    return foodItems.get(id);
   }
 
   @Override
   public void printFoodItems() {
-    System.out.println("\nFood items from " + this.name + ":");
-    for (int id : this.foodItems.keySet()) {
-      FoodItem foodItem = this.foodItems.get(id);
+    System.out.println("\nFood items from " + name + ":");
+    for (int id : foodItems.keySet()) {
+      FoodItem foodItem = foodItems.get(id);
       foodItem.printDetails();
     }
   }
 
   @Override
   public void printRewards() {
-    System.out.println("\nReward points: " + this.rewards);
+    System.out.println("\nReward points: " + rewards);
   }
 
   /* Modifiers */
   @Override
   public void incrementOrderCount() {
-    this.orderCount++;
+    orderCount++;
   }
 
   @Override
@@ -125,7 +124,7 @@ class Restaurant extends Account implements RestaurantInterface {
       category,
       discount
     );
-    this.foodItems.put(foodItem.getId(), foodItem);
+    foodItems.put(foodItem.getId(), foodItem);
 
     System.out.println();
     foodItem.printDetails();
@@ -133,11 +132,11 @@ class Restaurant extends Account implements RestaurantInterface {
 
   @Override
   public void editItem() {
-    this.printFoodItems();
+    printFoodItems();
 
     System.out.print("\nSelect food by ID: ");
     int id = in.nextInt();
-    FoodItem selectedItem = this.foodItems.get(id);
+    FoodItem selectedItem = foodItems.get(id);
 
     String choicesText = "\nChoose an attribute to edit:\n"
       + "  1) Name\n"
@@ -212,11 +211,11 @@ class Restaurant extends Account implements RestaurantInterface {
 
   @Override
   public void setDiscount() {
-    if (this.type.equals("Regular")) {
+    if (type.equals("Regular")) {
       System.out.println("Regular restaurants cannot set discount on bill value");
     } else {
       System.out.print("\nEnter discount on bill value (%): ");
-      this.relativeDiscount = in.nextFloat();
+      relativeDiscount = in.nextFloat();
     }
   }
 
@@ -226,29 +225,29 @@ class Restaurant extends Account implements RestaurantInterface {
 
   Restaurant(String name, String address, String type) {
     super(name, address, type);
-    this.relativeDiscount = 0;
-    this.absoluteDiscount = 0;
-    this.rewardUnit = 5;
-    this.rewardPer = 100;
-    this.orderCount = 0;
-    this.foodItems = new HashMap<Integer, FoodItem>();
-    this.in = new Scanner(System.in);
+    relativeDiscount = 0;
+    absoluteDiscount = 0;
+    rewardUnit = 5;
+    rewardPer = 100;
+    orderCount = 0;
+    foodItems = new HashMap<Integer, FoodItem>();
+    in = new Scanner(System.in);
   }
 }
 
 class AuthenticRestaurant extends Restaurant {
   AuthenticRestaurant(String name, String address) {
     super(name, address, "Authentic");
-    this.rewardUnit = 2;
-    this.rewardPer = 200;
-    this.absoluteDiscount = 50;
+    rewardUnit = 25;
+    rewardPer = 200;
+    absoluteDiscount = 50;
   }
 }
 
 class FastFoodRestaurant extends Restaurant {
   FastFoodRestaurant(String name, String address) {
     super(name, address, "Fast Food");
-    this.rewardUnit = 1;
-    this.rewardPer = 150;
+    rewardUnit = 10;
+    rewardPer = 150;
   }
 }

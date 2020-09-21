@@ -14,10 +14,13 @@ public class Menu {
         + "  3) Check User Details\n"
         + "  4) Company Account Details\n"
         + "  5) Exit\n";
+
       System.out.println(menuText);
       System.out.print("Enter choice: ");
+
       int choice = in.nextInt();
       in.nextLine();
+
       switch(choice) {
         case 1: {
           subMenu.restaurant();
@@ -90,7 +93,7 @@ class SubMenu {
           restaurant.setDiscount();
           break;
         }
-        case 5: 
+        case 5:
         default: {
           return;
         }
@@ -119,7 +122,7 @@ class SubMenu {
 
       switch (choice) {
         case 1: {
-          if (customer.getNewOrder()) {
+          if (customer.isNewOrder()) {
             restaurantActions.listUsers();
             restaurant = company
               .getRestaurants()
@@ -131,7 +134,7 @@ class SubMenu {
           break;
         }
         case 2: {
-          if (customer.getNewOrder()) {
+          if (customer.isNewOrder()) {
             System.out.println("\nPlease add food items before checking out cart!");
             break;
           }
