@@ -1,0 +1,3 @@
+[submodule "color-switch-java"]
+	path = color-switch-java
+	url = git@github.com:ananyalohani/color-switch-java
